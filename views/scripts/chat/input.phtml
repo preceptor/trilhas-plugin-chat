@@ -1,0 +1,26 @@
+<div class="chat-footer">
+	<form action="#" id="chat-message-form-<?php echo $this->rs->id?>">
+		<input type="hidden" value="<?php echo $this->rs->id?>" name="person_id" />
+		<textarea id="chat-message-text-<?php echo $this->rs->id?>" name="ds"></textarea>
+		<input type="submit" value="<?php echo $this->translate( "send" )?>">
+	</form>
+</div>
+<div class="clear"></div>
+<script>
+YAHOO.util.Event.onDOMReady( function(){
+	YAHOO.util.Event.on( "chat-message-text-<?php echo $this->rs->id?>" , "keypress" , function( ev ){
+		var key = YAHOO.util.Event.getCharCode( ev );
+		
+		if( key == 13 )
+		{
+			YAHOO.util.Event.stopEvent( ev );
+			Chat.submit( <?php echo $this->rs->id?> , "<?php echo $this->translate("write a message")?>" );
+		}
+	});
+	
+	YAHOO.util.Event.on( "chat-message-form-<?php echo $this->rs->id?>" , "submit" , function( ev ){
+		YAHOO.util.Event.stopEvent( ev );
+		Chat.submit( <?php echo $this->rs->id?> , "<?php echo $this->translate("write a message")?>" );
+	});
+});
+</script>

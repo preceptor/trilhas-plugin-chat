@@ -1,0 +1,44 @@
+<?php if ($this->users):?>
+    <ul class="user">
+        <?php foreach ($this->users as $user):?>
+            <?php $className = $user->blocked ? 'blocked' : null;?>
+            <li class="<?php echo $className?>">
+                <img alt="<?php echo $user->name ?>" src="upload/<?php echo $this->thumbnail($user->image, 'small') ?>" />
+                <?php if($this->isAllowed(array('module' => 'chat', 'controller' => 'room', 'action' => 'block')) 
+                         && $user->user_id != Zend_Auth::getInstance()->getIdentity()->id):?>
+                    <input type="checkbox" name="block[]" value="<?php echo $user->user_id?>" />
+                <?php endif;?>
+                <?php echo $user->name?>
+                <?php if ($user->role != 'student'):?>
+                    (<?php echo $this->translate($user->role);?>)
+                <?php endif;?>
+                <div class="clear-min">&nbsp;</div>
+            </li>
+        <?php endforeach;?>
+    </ul>
+<?php endif;?>
+
+<?php if ($this->stream):?>
+    <ul class="messages">
+        <?php foreach ($this->stream as $key => $message):?>
+            <li class="<?php echo $key%2 ? 'other' : null?>">
+                <img alt="<?php echo $user->name ?>" src="upload/<?php echo $this->thumbnail($message->image, 'small') ?>" />
+                <?php if ($message->role == 'student'):?>
+                    <em><?php echo $message->name?></em>:
+                    <?php echo $message->description?>
+                <?php else:?>
+                    <strong><em><?php echo $message->name?></em>:
+                    <?php echo $message->description?></strong>
+                <?php endif;?>
+                <span><?php echo $this->date($message->created, true)?></span>
+                <div class="clear-min">&nbsp;</div>
+            </li>
+        <?php endforeach;?>
+    </ul>
+<?php endif;?>
+<script type="text/javascript">
+    $('.chat-room .messages').scrollTop(9999999);
+    <?php if ($this->blocked):?>
+        alert('<?php echo $this->translate('Blocked')?>');
+    <?php endif;?>
+</script>

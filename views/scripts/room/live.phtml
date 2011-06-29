@@ -1,0 +1,77 @@
+<div class="chat-room">
+    <div>
+        <h3><?php echo $this->data->title?></h3>
+        <?php echo $this->data->description?>
+    </div>
+    <br />
+    <div class="stream">
+        <?php echo $this->render('room/stream.phtml')?>
+    </div>
+    <br />
+    <?php if($this->isAllowed(array('module' => 'chat', 'controller' => 'room', 'action' => 'block'))):?>
+        <div class="buttons">
+            <input class="block" type="button" value="<?php echo $this->translate('Block')?>" />
+            <input class="unblock" type="button" value="<?php echo $this->translate('Unblock')?>" />
+        </div>
+    <?php endif;?>
+    <div class="form">
+        <form action="chat/room/live-save">
+            <input type="hidden" value="<?php echo $this->id?>" name="id" />
+            <textarea rows="5" name="description"></textarea><br />
+            <input type="submit" value="<?php echo $this->translate('Send')?>" />
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    $('.chat-room form').submit(function(){
+        var $this = $(this);
+        $.post(this.action, $this.serialize(), function(data){
+            $('.chat-room .stream').html(data);
+            $this.find('textarea').val('');
+        });
+        return false;
+    });
+
+    $('.chat-room form textarea').keypress(function(e){
+        if (e.keyCode == 13) {
+            $(this).parents('form').submit();
+            return false;
+        }
+    });
+
+    if (intervalVar) {
+        clearInterval(intervalVar);
+    }
+    <?php if(!$this->interval):?>
+        var intervalVar = setInterval(function(){
+            var $liveRoom = $('.chat-room');
+
+            if ($liveRoom.length) {
+                $liveRoom.children('.stream')
+                         .load('chat/room/live/interval/true/id/<?php echo $this->id?>');
+            } else {
+                clearInterval(intervalVar);
+            }
+        }, 10000);
+    <?php endif?>
+
+    $('.chat-room .buttons .block').click(function(){
+        var $checkbox = $('.chat-room .user input[type=checkbox]:checked');
+        if ($checkbox.length) {
+            $.post('chat/room/block/id/<?php echo $this->id?>', $checkbox.serialize(), function(data){
+                $('.chat-room .stream').html(data);
+            });
+        }
+        return false;
+    });
+    
+    $('.chat-room .buttons .unblock').click(function(){
+        var $checkbox = $('.chat-room .user input[type=checkbox]:checked');
+        if ($checkbox.length) {
+            $.post('chat/room/unblock/id/<?php echo $this->id?>', $checkbox.serialize(), function(data){
+                $('.chat-room .stream').html(data);
+            });
+        }
+        return false;
+    });
+</script>
