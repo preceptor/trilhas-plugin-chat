@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <name>Notepad</name>
+    <description>Virtual notepad for annotations in a course</description>
+    <author>Preceptor Educação a Distância</author>
+    <version>1.0</version>
+    <license>GPL 3</license>
+    <keywords>notepad, annotations, registers</keywords>
+    <url>http://www.preceptoread.com.br</url>
+    
+    <files>
+        <sql>
+            <install>data/sql/install.sql</install>
+            <uninstall>data/sql/uninstall.sql</uninstall>
+        </sql>
+        <languages>
+            <language name="pt_BR">data/language/pt_BR/notepad.csv</language>
+            <language name="en_US">data/language/en_US/notepad.csv</language>
+        </languages>
+    </files>
+    
+    <!--
+    <configuration>
+        <item name="notepad_option">valor para gravar na tabela</item>
+    </configuration>
+    -->
+    
+    <menus>
+        <menu type="tri_classroom_menu">
+            <item group="support" resource="notepad/index/index">notepad</item>    
+        </menu>
+    </menus>
+    
+    <access>
+        <resource role="identified">notepad/index/index</resource>
+        <resource role="identified">notepad/index/save</resource>
+        <resource role="identified">notepad/index/delete</resource>
+    </access>
+</configuration>
