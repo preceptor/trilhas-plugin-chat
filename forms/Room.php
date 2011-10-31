@@ -84,6 +84,6 @@ class Chat_Form_Room extends Zend_Form
              ->addElement($description)
              //->addElement($max)
              ->addElement($status)
-             ->addElement('submit', 'Save');
+             ->addElement('submit', 'Save', array('class' => 'btn primary'));
    }
 }

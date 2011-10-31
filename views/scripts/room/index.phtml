@@ -1,8 +1,13 @@
 <?php if($this->isAllowed('form')): ?>	
-	<div class="aright"><?php echo $this->ajax("new", 'chat/room/form/', 2); ?></div>
+	<div class="aright"><?php echo $this->ajax("new", 'chat/room/form/', 3); ?></div>
 <?php endif; ?>	
 <?php if (count($this->data)):?>
-    <table class="datatable">
+    <table class="zebra-striped">
+        <tr>
+            <th><?php echo $this->translate('Name') ?></th>
+            <th><?php echo $this->translate('Status') ?></th>
+            <th></th>
+        </tr>
         <?php foreach ($this->data as $data): ?>
             <tr>
                 <td>
@@ -12,7 +17,7 @@
                 <td>
                     <?php echo $this->translate($data->status)?>
                 </td>
-                <td nowrap="nowrap" width="130">
+                <td nowrap="nowrap" width="140">
                     <?php if ($this->isAllowed('form')): ?>
                         <?php echo $this->ajax("edit", 'chat/room/form/id/'. $data->id, 2); ?>
                     <?php endif;?>
@@ -46,5 +51,5 @@
         return false;
 	});
 
-    $('input[type=button], input[type=submit]').button();
+    
 </script>
